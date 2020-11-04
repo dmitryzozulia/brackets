@@ -1,25 +1,27 @@
-module.exports = function check(str, bracketsConfig) {
-    let stack = []
-    bracketsConfig = bracketsConfig.reduce((acc,v) => {
+module.exports = function check(str, config) {
+
+    config = config.reduce((acc,v) => {
         acc[v[0]] = v[1]
         return acc
-    },{})
+    }, {})
+
+    let arr = []
 
     for (let i = 0; i < str.length; i++) {
-        for (let key in bracketsConfig) {
-            if (key === bracketsConfig[key] && stack.length && stack[stack.length - 1] === key) {
-                stack.pop()
+        for (let key in config) {
+            if (key === config[key] && arr.length && arr[arr.length - 1] === key) {
+                arr.pop()
                 continue
             }
 
             if (str[i] === key) {
-                stack.push(str[i])
+                arr.push(str[i])
                 break
             }
 
-            if (str[i] === bracketsConfig[key]) {
-                if (stack[stack.length-1] === key) {
-                    stack.pop()
+            if (str[i] === config[key]) {
+                if (arr[arr.length-1] === key) {
+                    arr.pop()
                     break
                 }
                 else {
@@ -28,5 +30,5 @@ module.exports = function check(str, bracketsConfig) {
             }
         }
     }
-    return !stack.length
+    return !arr.length
 }
